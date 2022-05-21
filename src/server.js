@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 
 const app = express();
 
@@ -10,6 +10,8 @@ app.set("views", __dirname + "/views");
 app.use("/public", express.static(__dirname + "/public"));
 // home.pug를 render하는 route handler 생성
 app.get("/", (req, res) => res.render("home"));
+// 다른 url을 작성해도 "/" 화면 렌더
+app.get("/*", (req, res) => res.redirect("/"));
 
 const handleListen = () => console.log(`Listening on http://localhost:3000`);
 app.listen(3000, handleListen);
