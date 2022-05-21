@@ -2,31 +2,19 @@
   "name": "zoomin",
   "version": "1.0.0",
   "description": "Zoom Clone using NodeJS, WebRTC and Websockets.",
-  "main": "index.js",
+  "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jeongdxxn/zoomin.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jeongdxxn/zoomin/issues"
-  },
-  "homepage": "https://github.com/jeongdxxn/zoomin#readme",
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.17.10",
-    "@babel/node": "^7.17.10",
-    "@babel/preset-env": "^7.17.10",
-    "nodemon": "^2.0.16"
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/node": "^7.14.7",
+    "@babel/preset-env": "^7.14.7",
+    "nodemon": "^2.0.12"
   },
   "dependencies": {
-    "express": "^4.18.1",
+    "express": "^4.17.1",
     "pug": "^3.0.2"
   }
 }
