@@ -25,15 +25,16 @@ function onSocketClose() {
   console.log("Disconnected from the Browser 😵");
 }
 
-function onSocketMessage(message) {
-  console.log(message);
-}
+const sockets = [];
 
 wss.on("connection", (socket) => {
-  console.log("Connected to Browser 👍");
+  sockets.push(socket);
+  console.log("Connected to Browser ✅");
   socket.on("close", onSocketClose);
-  socket.on("message", onSocketMessage);
-  socket.send("hello!!");
+  socket.on("message", (message) => {
+    console.log(message.toString("utf-8"));
+    sockets.forEach((aSocket) => aSocket.send(message.toString()));
+  });
 });
 
 server.listen(3000, handleListen);
