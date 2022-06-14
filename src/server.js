@@ -11,9 +11,9 @@ app.set("views", __dirname + "/views");
 // public url을 생성해서 유저에게 파일 공유
 app.use("/public", express.static(__dirname + "/public"));
 // home.pug를 render하는 route handler 생성
-app.get("/", (req, res) => res.render("home"));
+app.get("/", (_, res) => res.render("home"));
 // 다른 url을 작성해도 "/" 화면 렌더
-app.get("/*", (req, res) => res.redirect("/"));
+app.get("/*", (_, res) => res.redirect("/"));
 
 const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
@@ -29,12 +29,23 @@ const sockets = [];
 
 wss.on("connection", (socket) => {
   sockets.push(socket);
+  socket["nickname"] = "in";
   console.log("Connected to Browser ✅");
   socket.on("close", onSocketClose);
-  socket.on("message", (message) => {
-    console.log(message.toString("utf-8"));
-    sockets.forEach((aSocket) => aSocket.send(message.toString()));
-  });
+  socket.on("message", (msg) => {
+    const message = JSON.parse(msg);
+    switch (message.type) {
+      case "new_message":
+        sockets.forEach((aSocket) =>
+          aSocket.send(`${socket.nickname}: ${message.payload}`)
+        );
+        break;
+      case "nickname":
+        socket["nickname"] = message.payload;
+        break;
+      default:
+    }
+  })
 });
 
-server.listen(3000, handleListen);
+server.listen(3000, handleListen); 
