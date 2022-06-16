@@ -1,24 +1,29 @@
-import express from "express";
 import http from "http";
-import WebSocket from "ws";
+import SocketIO from "socket.io"
+import express from "express";
 
 const app = express();
 
-// pug를 view engine으로 설정
-app.set("view engine", "pug");
-// express에 template가 어디에 있는지 지정
-app.set("views", __dirname + "/views");
-// public url을 생성해서 유저에게 파일 공유
-app.use("/public", express.static(__dirname + "/public"));
-// home.pug를 render하는 route handler 생성
-app.get("/", (_, res) => res.render("home"));
-// 다른 url을 작성해도 "/" 화면 렌더
-app.get("/*", (_, res) => res.redirect("/"));
+app.set("view engine", "pug"); // pug를 view engine으로 설정
+app.set("views", __dirname + "/views"); // express에 template가 어디에 있는지 지정
+app.use("/public", express.static(__dirname + "/public")); // public url을 생성해서 유저에게 파일 공유
+app.get("/", (_, res) => res.render("home")); // home.pug를 render하는 route handler 생성
+app.get("/*", (_, res) => res.redirect("/")); // 다른 url을 작성해도 "/" 화면 렌더
 
-const handleListen = () => console.log(`Listening on http://localhost:3000`);
+const handleListen = () => console.log(`Listening on http://localhost:3001`);
 
 // http 서버 위에 ws 서버 생성
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
+const wsServer = SocketIO(httpServer);
+
+wsServer.on("connection", (socket) => {
+  console.log(socket);
+});
+
+/*
+* WebSocket 사용
+import WebSocket from "ws";
+
 const wss = new WebSocket.Server({ server });
 
 function onSocketClose() {
@@ -47,5 +52,6 @@ wss.on("connection", (socket) => {
     }
   })
 });
+*/
 
-server.listen(3000, handleListen); 
+httpServer.listen(3001, handleListen); 
